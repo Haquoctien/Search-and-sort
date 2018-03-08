@@ -93,15 +93,15 @@ void sortBySelection(Item dat[], int n)
 
 void sortByInsertion(Item dat[], int n)
 {
-	Item keyItem;
+	Item holder;
 	for (int key = 1, insert; key < n; key++)
 	{
-		keyItem = dat[key];
-		for (insert = key - 1; insert >= 0 && (keyItem.word).compare(dat[insert].word) <= 0; insert--)
+		holder = dat[key];
+		for (insert = key - 1; insert >= 0 && (holder.word).compare(dat[insert].word) <= 0; insert--)
 		{
 			dat[insert + 1] = dat[insert];
 		}
-		dat[insert + 1] = keyItem;
+		dat[insert + 1] = holder;
 	}
 }
 
