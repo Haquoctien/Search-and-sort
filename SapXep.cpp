@@ -217,16 +217,18 @@ int main()
 	cout << "Tai du lieu tu dien" << endl;
 	loadData("mcomputer.txt", data, n);
 	cout << "Tong so tu vung: " << n << endl;
-	cout << "Thoi gian tai du lieu: " << (clock() - start) / 1e6 << " sec" << endl;
+	cout << "Thoi gian tai du lieu: " << (clock() - start) / 1e6 << "s" << endl;
 
 	for (int i = 0; i < 5; i++)
 	{
-		clock_t temp;
+		clock_t temp = 0;
 		for (int j = 0; j < 5; j++)
 		{
 			start = clock();
 			list[i].fp(data, n);
 			temp += clock() - start;
+			if (i < 4 || j < 4)
+				loadData("mcomputer.txt", data, n);
 		}
 		list[i].time = temp/5;
 	}
@@ -240,6 +242,12 @@ int main()
 				min = candidate;
 		}
 		swap(list[min], list[key]);
+	}
+
+	cout << "Nhung thuat toan sap xep theo thoi gian tang dan: " << endl;
+	for (int i = 0; i < 5; i++)
+	{
+		cout << list[i].name << " " << list[i].time/1e6 << "s" << endl;
 	}
 
 	delete[] data;
