@@ -83,14 +83,15 @@ int main() {
 			cout << data[i].meaning << endl;
 		else
 			cout << "Khong tim thay tu" << endl;
-		cout << "Thoi gian tim: " << clock() - start << "ms" << endl;
+
+		cout << "Thoi gian tim bang linear: " << clock() - start << " microsec" << endl;
 		start = clock();
 		j = binarySearch(word, data, n);
 		if (j >= 0)
 			cout << data[j].meaning << endl;
 		else
 			cout << "Khong tim thay tu" << endl;
-		cout << "Thoi gian tim: " << clock() - start << "ms" << endl;
+		cout << "Thoi gian tim bang binary: " << clock() - start << " microsec" << endl;
 	}
 	delete[] data;
 	return 0;
