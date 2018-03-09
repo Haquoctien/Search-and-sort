@@ -5,14 +5,14 @@
 #include <ctime>
 
 using namespace std;
-
-typedef void (*sortFunction)(Item *, int); // sortFunction an alias for void <function pointer>(Item *, int)
-
 struct Item
 {
 	string word;
 	string meaning;
 };
+
+typedef void (*sortFunction)(Item *, int); // sortFunction an alias for void <function pointer>(Item *, int)
+
 
 struct SortAlgorithm
 {
@@ -218,35 +218,6 @@ int main()
 	cout << "Tong so tu vung: " << n << endl;
 	cout << "Thoi gian tai du lieu: " << (clock() - start) / 1e6 << " sec" << endl;
 
-	start = clock();
-	sortBySelection(data, n);
-	list[0].time = clock() - start;
-	cout << "Thoi gian sap xep dung " << list[0].name << " : " << list[0].time / 1e6 << " sec" << endl;
-
-	loadData("mcomputer.txt", data, n);
-	start = clock();
-	sortByInsertion(data, n);
-	list[1].time = clock() - start;
-	cout << "Thoi gian sap xep dung " << list[1].name << " : " << list[1].time / 1e6 << " sec" << endl;
-
-	loadData("mcomputer.txt", data, n);
-	start = clock();
-	sortByInterchange(data, n);
-	list[2].time = clock() - start;
-	cout << "Thoi gian sap xep dung " << list[2].name << " : " << list[2].time / 1e6 << " sec" << endl;
-
-	loadData("mcomputer.txt", data, n);
-	start = clock();
-	sortByBubble(data, n);
-	list[3].time = clock() - start;
-	cout << "Thoi gian sap xep dung " << list[3].name << " : " << list[3].time / 1e6 << " sec" << endl;
-
-	loadData("mcomputer.txt", data, n);
-	start = clock();
-	sortByHeap(data, n);
-	list[4].time = clock() - start;
-	cout << "Thoi gian sap xep dung " << list[4].name << " : " << list[4].time / 1e6 << " sec" << endl;
-
 	for (int key = 0, min; key < 4; key++)
 	{
 		min = key;
@@ -258,9 +229,7 @@ int main()
 		swap(list[min], list[key]);
 	}
 
-	cout << "Thoi gian chay xep giam dan: ";
-	for (int i = 0; i < 5; i++)
-		cout << list[i].name << " ";
+
 	delete[] data;
 	return 0;
 }
