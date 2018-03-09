@@ -217,7 +217,7 @@ int main()
 	cout << "Tai du lieu tu dien" << endl;
 	loadData("mcomputer.txt", data, n);
 	cout << "Tong so tu vung: " << n << endl;
-	cout << "Thoi gian tai du lieu: " << (clock() - start) / 1e6 << " secS" << endl;
+	cout << "Thoi gian tai du lieu: " << (clock() - start) / 1e6 << " sec" << endl;
 
 	for (int i = 0; i < 5; i++)
 	{
