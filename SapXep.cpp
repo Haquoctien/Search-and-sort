@@ -218,7 +218,7 @@ int main()
 	loadData("mcomputer.txt", data, n);
 	cout << "Tong so tu vung: " << n << endl;
 	cout << "Thoi gian tai du lieu: " << (clock() - start) / 1e6 << " sec" << endl;
-
+	cout << "Dang chay cac thuat toan sap xep de danh gia, vui long doi..." << endl;
 	for (int i = 0; i < 5; i++)
 	{
 		clock_t temp = 0;
@@ -227,8 +227,7 @@ int main()
 			start = clock();
 			list[i].fp(data, n);
 			temp += clock() - start;
-			if (i < 4 || j < 4)
-				loadData("mcomputer.txt", data, n);
+			loadData("mcomputer.txt", data, n);
 		}
 		list[i].time = temp/5;
 	}
