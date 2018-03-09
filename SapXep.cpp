@@ -16,6 +16,7 @@ typedef void (*sortFunction)(Item *, int); // sortFunction an alias for void <fu
 
 struct SortAlgorithm
 {
+	string name;
 	sortFunction fp;
 	clock_t time;
 };
@@ -203,11 +204,11 @@ int main()
 				Heap = &sortByHeap;
 	int n;
 	SortAlgorithm list[5] = {
-		{Selection, 0},
-		{Insertion, 0},
-		{Interchange, 0},
-		{Bubble, 0},
-		{Heap, 0}
+		{"Selection", Selection, 0},
+		{"Insertion", Insertion, 0},
+		{"Interchange", Interchange, 0},
+		{"Bubble", Bubble, 0},
+		{"Heap", Heap, 0}
 	};
 
 	Item *data = new Item[13375];
@@ -217,6 +218,18 @@ int main()
 	loadData("mcomputer.txt", data, n);
 	cout << "Tong so tu vung: " << n << endl;
 	cout << "Thoi gian tai du lieu: " << (clock() - start) / 1e6 << " sec" << endl;
+
+	for (int i = 0; i < 5; i++)
+	{
+		clock_t temp;
+		for (int j = 0; j < 5; j++)
+		{
+			start = clock();
+			list[i].fp(data, n);
+			temp += clock() - start;
+		}
+		list[i].time = temp/5;
+	}
 
 	for (int key = 0, min; key < 4; key++)
 	{
@@ -228,7 +241,6 @@ int main()
 		}
 		swap(list[min], list[key]);
 	}
-
 
 	delete[] data;
 	return 0;
