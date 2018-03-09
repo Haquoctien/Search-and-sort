@@ -217,7 +217,7 @@ int main()
 	cout << "Tai du lieu tu dien" << endl;
 	loadData("mcomputer.txt", data, n);
 	cout << "Tong so tu vung: " << n << endl;
-	cout << "Thoi gian tai du lieu: " << (clock() - start) / 1e6 << "s" << endl;
+	cout << "Thoi gian tai du lieu: " << (clock() - start) / 1e6 << " secS" << endl;
 
 	for (int i = 0; i < 5; i++)
 	{
@@ -247,7 +247,7 @@ int main()
 	cout << "Nhung thuat toan sap xep theo thoi gian tang dan: " << endl;
 	for (int i = 0; i < 5; i++)
 	{
-		cout << list[i].name << " " << list[i].time/1e6 << "s" << endl;
+		cout << list[i].name << " " << list[i].time/1e6 << " sec" << endl;
 	}
 
 	delete[] data;
