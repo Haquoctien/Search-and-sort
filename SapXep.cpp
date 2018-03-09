@@ -6,6 +6,8 @@
 
 using namespace std;
 
+typedef void (*sortFunction)(Item *, int); // sortFunction an alias for void <function pointer>(Item *, int)
+
 struct Item
 {
 	string word;
@@ -14,7 +16,7 @@ struct Item
 
 struct SortAlgorithm
 {
-	string name;
+	sortFunction fp;
 	clock_t time;
 };
 
@@ -194,16 +196,21 @@ void sortByRadix(Item dat[], int n)
 
 int main()
 {
-	Item *data = new Item[13375];
+	sortFunction Selection = &sortBySelection, \
+				Insertion = &sortByInsertion, \
+				Interchange = &sortByInterchange, \
+				Bubble = &sortByBubble, \
+				Heap = &sortByHeap;
 	int n;
 	SortAlgorithm list[5] = {
-		{"Selection", 0},
-		{"Insertion", 0},
-		{"Interchange", 0},
-		{"Bubble", 0},
-		{"Heap", 0}
+		{Selection, 0},
+		{Insertion, 0},
+		{Interchange, 0},
+		{Bubble, 0},
+		{Heap, 0}
 	};
 
+	Item *data = new Item[13375];
 	clock_t start;
 	start = clock();
 	cout << "Tai du lieu tu dien" << endl;
