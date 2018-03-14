@@ -136,23 +136,31 @@ void sortByBubble(Item dat[], int n)
 
 void maxHeapify(Item *arr, int head, int n)
 {
-	int largerChild = head * 2 + 1;
-	while (largerChild < n)
+	int largerChild;
+	// while head has child(ren)
+	while (head*2 + 1 < n)
 	{
+		// assume larger child is left child
+		largerChild = head*2 + 1;
+		// if right child exists
 		if (largerChild + 1 < n)
 		{
+			// if right child is larger, let it be larger child
 			if ((arr[largerChild].word).compare(arr[largerChild + 1].word) < 0)
 				largerChild += 1;
 		}
+		// if larger child smaller than head
 		if ((arr[largerChild].word).compare(arr[head].word) < 0)
 			return;
+		// else swap head and larger child
 		swap(arr[head], arr[largerChild]);
+		// move on to next head, being previous head's larger child
 		head = largerChild;
-		largerChild = head * 2 + 1;
 	}
 }
 void initHeap(Item *arr, int n)
 {
+	// 
 	for (int head = (n - 1) / 2; head >= 0; head--)
 		maxHeapify(arr, head, n);
 }
