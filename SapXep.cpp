@@ -11,7 +11,7 @@ struct Item
 	string meaning;
 };
 
-typedef void (*sortFunction)(Item *, int, int*&); // sortFunction an alias for void <function pointer>(Item *, int)
+typedef void (*sortFunction)(Item *, int, int *&); // sortFunction an alias for void <function pointer>(Item *, int)
 
 struct SortAlgorithm
 {
@@ -49,7 +49,7 @@ void loadData(char file[], Item dat[], int &n)
 	fi.close();
 }
 
-void saveData(char file[], Item dat[], int actualIndices[], int n)
+void saveData(char file[], Item dat[], int n)
 {
 	ofstream fo(file);
 	if (!fo.is_open())
@@ -61,7 +61,8 @@ void saveData(char file[], Item dat[], int actualIndices[], int n)
 	int b;
 	for (int i = 0, ip; i < n; i++)
 	{
-		ip = actualIndices[i];
+		//ip = actualIndices[i];
+		ip = i;
 		while ((b = dat[ip].meaning.find("\n")) > -1)
 			dat[ip].meaning.replace(b, 2, "|=");
 		fo << dat[ip].word << "\t" << dat[ip].meaning << endl;
@@ -70,11 +71,11 @@ void saveData(char file[], Item dat[], int actualIndices[], int n)
 	fo.close();
 }
 
-
 void sortBySelection(Item dat[], int n, int *&actualIndices)
 {
 	actualIndices = new int[n];
-	for(int i = 0; i < n; actualIndices[i] = i++);
+	for (int i = 0; i < n; actualIndices[i] = i++)
+		;
 	int min;
 	for (int key = 0; key < n - 1; key++)
 	{
@@ -93,23 +94,23 @@ void sortBySelection(Item dat[], int n, int *&actualIndices)
 void sortByInsertion(Item dat[], int n, int *&actualIndices)
 {
 	actualIndices = new int[n];
-	for(int i = 0; i < n; actualIndices[i] = i++);
+	for (int i = 0; i < n; actualIndices[i] = i++);
 	Item holder;
-	for (int key = 1, insert, sortedKey; key < n; key++)
+	for (int key = 1, insert; key < n; key++)
 	{
-		sortedKey = actualIndices[key];
-		for (insert = key - 1; insert >= 0 && (dat[sortedKey].word).compare(dat[actualIndices[insert]].word) <= 0; insert--)
+		for (insert = key - 1; insert >= 0 && (dat[actualIndices[key]].word).compare(dat[actualIndices[insert]].word) <= 0; insert--)
 		{
-			actualIndices[insert + 1] = actualIndices[insert]; 
+			actualIndices[insert + 1] = actualIndices[insert];
 		}
-		actualIndices[insert+ 1] = sortedKey;
+		actualIndices[insert + 1] = actualIndices[key];
 	}
 }
 
 void sortByInterchange(Item dat[], int n, int *&actualIndices)
 {
 	actualIndices = new int[n];
-	for(int i = 0; i < n; actualIndices[i] = i++);
+	for (int i = 0; i < n; actualIndices[i] = i++)
+		;
 	for (int key = 0; key < n - 1; key++)
 	{
 		for (int candidate = key + 1; candidate < n; candidate++)
@@ -123,7 +124,8 @@ void sortByInterchange(Item dat[], int n, int *&actualIndices)
 void sortByBubble(Item dat[], int n, int *&actualIndices)
 {
 	actualIndices = new int[n];
-	for(int i = 0; i < n; actualIndices[i] = i++);
+	for (int i = 0; i < n; actualIndices[i] = i++)
+		;
 	for (int key = 0, actualKey; key < n - 1; key++)
 	{
 		actualKey = actualIndices[key];
@@ -141,10 +143,10 @@ void maxHeapify(Item *arr, int head, int n, int *&actualIndices)
 {
 	int largerChild;
 	// while head has child(ren)
-	while (head*2 + 1 < n)
+	while (head * 2 + 1 < n)
 	{
 		// assume larger child is left child
-		largerChild = head*2 + 1;
+		largerChild = head * 2 + 1;
 		// if right child exists
 		if (largerChild + 1 < n)
 		{
@@ -162,35 +164,120 @@ void maxHeapify(Item *arr, int head, int n, int *&actualIndices)
 	}
 }
 void initHeap(Item dat[], int n, int *&actualIndices)
-{ 
+{
 	for (int head = (n - 1) / 2; head >= 0; head--)
 		maxHeapify(dat, head, n, actualIndices);
 }
 void sortByHeap(Item dat[], int n, int *&actualIndices)
 {
 	actualIndices = new int[n];
-	for(int i = 0; i < n; actualIndices[i] = i++);
+	for (int i = 0; i < n; actualIndices[i] = i++)
+		;
 	initHeap(dat, n, actualIndices);
 	while (n > 0)
 	{
-		swap(actualIndices[0], actualIndices[n-1]);
+		swap(actualIndices[0], actualIndices[n - 1]);
 		n--;
 		maxHeapify(dat, 0, n, actualIndices);
 	}
 }
 
-void sortByMerge(Item dat[], int n)
+void merge(Item dat[],int l, int m, int r)
 {
-	// Cai dat code Sap xep Tron o day
+	int i, j, k;
+	// create temp arr
+	int leftlLength = m - l +1, rightLength = r-m;
+	Item L[leftlLength];
+	Item R[rightLength];
 
-	// ---------------------------
+	// copy to temp arr
+	for (i = 0; i < leftlLength; i++)
+		 L[i] = dat[l + i];
+	for (j = 0; j < rightLength; j++)
+		R[j] = dat[m + 1 + j];
+
+	// merge
+	i = 0;
+	j = 0;
+	k = l;
+	while (i < leftlLength && j < rightLength)
+	{
+		if ((L[i].word).compare(R[j].word) <= 0)
+		{
+			dat[k] = L[i];
+			i++;
+		}
+		else
+		{
+			dat[k] = R[j];
+			j++;
+		}
+		k++;
+	}
+
+	while (i < leftlLength)
+	{
+		dat[k] = L[i];
+		k++;
+		i++;
+	}
+
+	while (j < rightLength)
+	{
+		dat[k] = R[j];
+		k++;
+		j++;
+	}
 }
 
-void sortByQuick(Item dat[], int n)
+void sortByMerge(Item dat[], int l, int r)
 {
-	// Cai dat code Sap xep Nhanh o day
+	if (l < r)
+	{
+		int m = l + (r-l)/2;
+		sortByMerge(dat, l, m);
+		sortByMerge(dat, m+1, r);
+		merge(dat, l, m, r);
+	}
+}
 
-	// ---------------------------
+int partition(Item dat[], int low, int high)
+{
+	// choose last ele as pivot
+	int pivot = high, current, smaller;
+	// go from low to high, every time see a smaller current, swap it to the  most recent smaller
+	// position + 1, which starts at -1 because we start off not knowing if there's
+	// any smaller ele compared to pivot
+	for (smaller = low - 1, current = low; current < high-1; current++)
+	{
+		// if current smaller than pivot
+		if ((dat[pivot].word).compare(dat[current].word) > 0)
+		{
+			// increment smaller
+			smaller++;
+			// swap current and smaller
+			swap(dat[smaller], dat[current]);
+		}
+	}
+	// after moving all smaller to one side, swap pivot with position of last smaller + 1
+	// where equal or larger than pivot starts
+	swap(dat[smaller+1], dat[pivot]);
+
+	// return where pivot actually is after swap
+	return smaller + 1;
+}
+void sortByQuick(Item dat[], int low, int high)
+{
+	// recursively call sortByQuick until array legth = 1 or low = 
+	int pivot;
+	if (low < high)
+	{
+		// find position to divide
+		pivot = partition(dat, low, high);
+		// sort right
+		sortByQuick(dat, pivot + 1, high);
+		sortByQuick(dat, low, pivot - 1);
+	}
 }
 
 void sortByShell(Item dat[], int n)
@@ -209,18 +296,17 @@ void sortByRadix(Item dat[], int n)
 
 int main()
 {
-	sortFunction Selection = &sortBySelection, \
-				Insertion = &sortByInsertion, \
-				Interchange = &sortByInterchange, \
-				Bubble = &sortByBubble, \
-				Heap = &sortByHeap;
-	SortAlgorithm list[5] = {
-		{"Selection", Selection, 0},
-		{"Insertion", Insertion, 0},
-		{"Interchange", Interchange, 0},
-		{"Bubble", Bubble, 0},
-		{"Heap", Heap, 0}
-	};
+	// sortFunction Selection = &sortBySelection,
+	// 			 Insertion = &sortByInsertion,
+	// 			 Interchange = &sortByInterchange,
+	// 			 Bubble = &sortByBubble,
+	// 			 Heap = &sortByHeap;
+	// SortAlgorithm list[5] = {
+	// 	{"Selection", Selection, 0},
+	// 	{"Insertion", Insertion, 0},
+	// 	{"Interchange", Interchange, 0},
+	// 	{"Bubble", Bubble, 0},
+	// 	{"Heap", Heap, 0}};
 	int n;
 	Item *data = new Item[13375];
 	clock_t start;
@@ -230,40 +316,44 @@ int main()
 	cout << "Tong so tu vung: " << n << endl;
 	cout << "Thoi gian tai du lieu: " << (clock() - start) / 1e6 << " sec" << endl;
 	start = clock();
-	int * actualIndices;
+	// int *actualIndices = new int[n];
+	// for (int i = 0; i < n; actualIndices[i] = i++)
+	sortByMerge(data, 0, n-1);
+	cout << "Merge :" << (clock() - start) / 1e6 << " sec" << endl;
+	saveData("Merge", data, n);
 
-	cout << "Dang chay cac thuat toan sap xep de danh gia, vui long doi..." << endl;
-	for (int i = 0; i < 5; i++)
-	{
-		clock_t temp = 0;
-		for (int j = 0; j < 5; j++)
-		{
-			start = clock();
-			list[i].fp(data, n, actualIndices);
-			temp += clock() - start;
-		}
-		saveData(list[i].name, data, actualIndices, n);
-		list[i].time = temp/5;
-	}
+	// cout << "Dang chay cac thuat toan sap xep de danh gia, vui long doi..." << endl;
+	// for (int i = 0; i < 5; i++)
+	// {
+	// 	clock_t temp = 0;
+	// 	for (int j = 0; j < 5; j++)
+	// 	{
+	// 		start = clock();
+	// 		list[i].fp(data, n, actualIndices);
+	// 		temp += clock() - start;
+	// 	}
+	// 	saveData(list[i].name, data, actualIndices, n);
+	// 	list[i].time = temp / 5;
+	// }
 
-	for (int key = 0, min; key < 4; key++)
-	{
-		min = key;
-		for(int candidate = key +1; candidate < 5; candidate++)
-		{
-			if (list[key].time > list[candidate].time)
-				min = candidate;
-		}
-		swap(list[min], list[key]);
-	}
+	// for (int key = 0, min; key < 4; key++)
+	// {
+	// 	min = key;
+	// 	for (int candidate = key + 1; candidate < 5; candidate++)
+	// 	{
+	// 		if (list[key].time > list[candidate].time)
+	// 			min = candidate;
+	// 	}
+	// 	swap(list[min], list[key]);
+	// }
 
-	cout << "Nhung thuat toan sap xep theo thoi gian tang dan: " << endl;
-	for (int i = 0; i < 5; i++)
-	{
-		cout << list[i].name << " " << list[i].time/1e6 << " sec" << endl;
-	}
+	// cout << "Nhung thuat toan sap xep theo thoi gian tang dan: " << endl;
+	// for (int i = 0; i < 5; i++)
+	// {
+	// 	cout << list[i].name << " " << list[i].time / 1e6 << " sec" << endl;
+	// }
 
-	delete[] actualIndices;
+	// delete[] actualIndices;
 	delete[] data;
 	return 0;
 }
